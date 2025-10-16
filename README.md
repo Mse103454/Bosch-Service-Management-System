@@ -1,4 +1,4 @@
-# Bosch Service Management System
+# Car Service Management System
 
 A comprehensive automotive service management system designed for Bosch Service operations. This application provides an efficient way to manage parts inventory, create work orders, and generate PDF reports for automotive service centers.
 
