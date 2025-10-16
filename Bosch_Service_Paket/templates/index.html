@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Çanakçı Otomotiv İş Emri</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+
+<body>
+
+    <header class="new-header">
+        <div class="logo-and-title">
+            <img src="static/bosch-service-logo_image_1280w_960h.png" alt="Bosch Service Logo" class="logo">
+            <h1>Çanakçı Otomotiv</h1>
+        </div>
+        <div class="header-right">
+            <div class="rate-group">
+                <label for="exchange-rate-input">EURO / TL:</label>
+                <input type="number" id="exchange-rate-input" placeholder="Kur Girin" step="0.01">
+                <button id="set-rate-btn">Kuru Ayarla</button>
+            </div>
+            <button id="create-work-order-header-btn" class="header-button yellow-button">Servis İş Emri Oluştur</button>
+        </div>
+        
+        <!-- Veritabanı Bilgi Kutusu -->
+        <div class="db-info-box" id="db-info-box" style="display: none;">
+            <div class="db-info-content">
+                <h4>💾 Veritabanı Bilgisi</h4>
+                <p>Veritabanı konumu: <span id="db-location">Yükleniyor...</span></p>
+                <p class="db-note">✅ Tüm değişiklikler kalıcı olarak saklanacak</p>
+                <button class="db-close-btn" onclick="document.getElementById('db-info-box').style.display='none'">✕</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="form-panels">
+                <section class="panel customer-info-panel">
+                    <h2>Müşteri Bilgileri</h2>
+                    <div class="info-group">
+                        <p>Müşteri Adı: <input type="text" id="customer-name"></p>
+                        <p>Adres: <input type="text" id="customer-address"></p>
+                        <p>Telefon: <input type="tel" id="customer-phone"></p>
+                        <p>Sipariş Tarihi: <input type="date" id="order-date"></p>
+                        <p>Müşteri No: <input type="text" id="customer-no"></p>
+                        <p>İlgili Kişi No: <input type="text" id="offer-person-no"></p>
+                        <p>KDV Kayıt No: <input type="text" id="tax-number"></p>
+                        <p>Harici Belge No: <input type="text" id="external-doc-no"></p>
+                    </div>
+                </section>
+                <section class="panel car-info-panel">
+                    <h2>Araç Bilgileri</h2>
+                    <div class="info-group">
+                        <p>Plaka No: <input type="text" id="car-plate"></p>
+                        <p>Ziyaret KM: <input type="number" id="visit-km"></p>
+                        <p>Araç Üretici: <input type="text" id="car-make"></p>
+                        <p>Araç Model: <input type="text" id="car-model"></p>
+                        <p>İlk Lisans Tarihi: <input type="date" id="first-license-date"></p>
+                        <p>Araç Kimlik No: <input type="text" id="car-vin"></p>
+                        <p>Bir Sonraki Kontrol: <input type="text" id="next-inspection"></p>
+                        <p>Araç Giriş Tarihi: <input type="date" id="vehicle-entry-date"></p>
+                        <p>Araç Teslim Tarihi: <input type="date" id="vehicle-delivery-date"></p>
+                        <p>Servis Personeli: <input type="text" id="service-staff"></p>
+                    </div>
+                </section>
+            </div>
+
+            <section class="panel part-info-panel">
+                <h2>Parça Bilgileri ve Sepet</h2>
+                
+                <!-- Sekme Butonları -->
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="search-tab">Parça Arama</button>
+                    <button class="tab-btn" data-tab="external-tab">Harici Parça</button>
+                    <button class="tab-btn" data-tab="add-tab">Yeni Parça Ekle</button>
+                    <button class="tab-btn" data-tab="manage-tab">Parça Yönetimi</button>
+                    <button class="tab-btn" data-tab="labor-tab">İşçilik</button>
+                </div>
+
+                <div class="part-info-container">
+                    <!-- Parça Arama Sekmesi -->
+                    <div id="search-tab" class="tab-content active">
+                        <div class="search-column">
+                            <div class="search-section">
+                                <input type="text" id="part-search" placeholder="Parça kodu veya adıyla arayın...">
+                                <div id="search-results"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Harici Parça Sekmesi -->
+                    <div id="external-tab" class="tab-content">
+                        <div class="external-part-section">
+                            <h3>Harici Parça Ekle</h3>
+                            <p class="external-part-description">
+                                Veritabanında bulunmayan ancak depoda mevcut olan parçalar için kullanın. 
+                                Bu parçalar sadece mevcut iş emrine eklenir, veritabanına kaydedilmez.
+                            </p>
+                            <div class="external-part-form">
+                                <div class="form-row">
+                                    <label for="external-part-code">Parça Kodu:</label>
+                                    <input type="text" id="external-part-code" required>
+                                </div>
+                                <div class="form-row">
+                                    <label for="external-part-name">Parça Adı:</label>
+                                    <input type="text" id="external-part-name" required>
+                                </div>
+                                <div class="form-row">
+                                    <label for="external-part-price">Fiyat (TL):</label>
+                                    <input type="number" id="external-part-price" step="0.01" min="0" required>
+                                </div>
+                                <div class="form-row">
+                                    <label for="external-part-quantity">Miktar:</label>
+                                    <input type="number" id="external-part-quantity" placeholder="1" min="1" value="1" required>
+                                </div>
+                                <button id="add-external-part-btn" class="action-btn external-btn">Sepete Ekle</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Yeni Parça Ekleme Sekmesi -->
+                    <div id="add-tab" class="tab-content">
+                        <div class="add-part-form">
+                            <h3>Yeni Parça Ekle</h3>
+                            <div class="form-row">
+                                <label for="new-part-code">Parça Kodu:</label>
+                                <input type="text" id="new-part-code" required>
+                            </div>
+                            <div class="form-row">
+                                <label for="new-part-name">Parça Adı:</label>
+                                <input type="text" id="new-part-name" required>
+                            </div>
+                            <div class="form-row">
+                                <label for="new-part-category">Parça Türü:</label>
+                                <select id="new-part-category" required>
+                                    <option value="">Seçiniz...</option>
+                                    <option value="YAĞ FİLTRESİ">YAĞ FİLTRESİ</option>
+                                    <option value="HAVA FİLTRESİ">HAVA FİLTRESİ</option>
+                                    <option value="POLEN FİLTRESİ">POLEN FİLTRESİ</option>
+                                    <option value="MAZOT FİLTRESİ">MAZOT FİLTRESİ</option>
+                                    <option value="BUJİLER">BUJİLER</option>
+                                    <option value="DİĞER">DİĞER</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <label for="new-part-price">Fiyat:</label>
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <input type="number" id="new-part-price" step="0.01" min="0" required style="flex: 1;">
+                                    <select id="new-part-currency" required style="width: 80px;">
+                                        <option value="EUR">EUR</option>
+                                        <option value="TL">TL</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button id="add-new-part-btn" class="action-btn">Parça Ekle</button>
+                        </div>
+                    </div>
+
+                    <!-- Parça Yönetimi Sekmesi -->
+                    <div id="manage-tab" class="tab-content">
+                        <div class="manage-parts-section">
+                            <h3>Parça Yönetimi</h3>
+                            <div class="search-manage">
+                                <input type="text" id="manage-search" placeholder="Düzenlemek istediğiniz parçayı arayın...">
+                                <div id="manage-results"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- İşçilik Sekmesi -->
+                    <div id="labor-tab" class="tab-content">
+                        <div class="labor-section">
+                            <h3>İşçilik Ekle</h3>
+                            <div class="labor-form">
+                                <div class="form-row">
+                                    <label for="labor-description">Yapılan İş:</label>
+                                    <input type="text" id="labor-description" placeholder="İşçilik türünü arayın..." required>
+                                    <div id="labor-search-results" class="labor-search-results"></div>
+                                </div>
+                                <div class="form-row">
+                                    <label for="labor-price">İşçilik Ücreti (TL):</label>
+                                    <input type="number" id="labor-price" step="0.01" min="0" required>
+                                </div>
+                                <div class="labor-buttons">
+                                    <button id="add-labor-btn" class="action-btn">İşçilik Ekle</button>
+                                    <button id="add-external-labor-btn" class="action-btn external-labor-btn">Harici İşçilik Ekle</button>
+                                </div>
+                            </div>
+                            
+                            <div class="labor-list">
+                                <h4>Eklenen İşçilikler</h4>
+                                <div id="labor-items"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cart-column">
+                        <div class="cart-section">
+                            <h3>Sepet</h3>
+                            <table id="cart-table">
+                                <thead>
+                                    <tr>
+                                        <th>Kod/Tür</th>
+                                        <th>Açıklama</th>
+                                        <th>Miktar</th>
+                                        <th>Birim Fiyat (TL)</th>
+                                        <th>Fiyat (TL)</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cart-items"></tbody>
+                            </table>
+                        </div>
+                        <div class="totals-section">
+                            <div class="totals-buttons-group">
+                                <label for="profit-rate-input">Kar Oranı (%):</label>
+                                <input type="number" id="profit-rate-input" value="30" step="0.1" min="0">
+                                <label for="vat-rate-input">KDV Oranı (%):</label>
+                                <input type="number" id="vat-rate-input" value="20" step="0.1" min="0">
+                                <label for="discount-rate-input">İskonto (%):</label>
+                                <input type="number" id="discount-rate-input" value="0" step="0.1" min="0" max="100">
+                            </div>
+                            <p><strong>Ara Toplam:</strong> <span id="subtotal">0.00 TL</span></p>
+                            <p><strong>İskonto:</strong> <span id="discount-total">0.00 TL</span></p>
+                            <p><strong>KDV Hariç Toplam:</strong> <span id="subtotal-after-discount">0.00 TL</span></p>
+                            <p><strong>KDV:</strong> <span id="vat-total">0.00 TL</span></p>
+                            <p><strong>Genel Toplam:</strong> <span id="grand-total">0.00 TL</span></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Silme Onay Modalı -->
+    <div id="deleteModal" class="delete-modal">
+        <div class="delete-modal-content">
+            <h3>⚠️ Parça Silme Onayı</h3>
+            <p id="deleteModalText">Bu parçayı silmek istediğinizden emin misiniz?</p>
+            <div class="delete-modal-buttons">
+                <button id="confirmDeleteBtn" class="confirm-delete-btn">Evet, Sil</button>
+                <button id="cancelDeleteBtn" class="cancel-delete-btn">İptal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- İndirme Konumu Seçme Modalı -->
+    <div id="downloadLocationModal" class="download-location-modal">
+        <div class="download-location-modal-content">
+            <h3>📁 İndirme Konumu Seçin</h3>
+            <p>PDF dosyasının kaydedileceği klasörü seçin. Seçilen klasörde plaka adında bir alt klasör oluşturulacak ve PDF oraya kaydedilecektir.</p>
+            
+            <div class="folder-selection">
+                <label for="folderPath">Klasör Yolu:</label>
+                <div class="folder-input-group">
+                    <input type="text" id="folderPath" placeholder="Klasör seçilmedi - Lütfen aşağıdaki butona tıklayın" readonly>
+                    <button id="selectFolderBtn" class="select-folder-btn">
+                        Klasör Seç
+                    </button>
+                </div>
+                <div class="folder-selection-info">
+                    <p>💡 <strong>Klasör Seç:</strong> Butona tıklayarak klasör yolunu girin. Windows Explorer'da klasör yolunu kopyalamak için klasöre sağ tıklayıp "Özellikler" → "Konum" alanından kopyalayabilirsiniz.</p>
+                </div>
+            </div>
+            
+            <div class="preview-info">
+                <p><strong>Önizleme:</strong></p>
+                <p id="previewPath">Seçilen klasör: <span class="placeholder">Henüz klasör seçilmedi</span></p>
+                <p id="previewSubfolder">Alt klasör: <span class="placeholder">Henüz klasör seçilmedi</span></p>
+                <p id="previewFilename">Dosya adı: <span class="placeholder">Henüz klasör seçilmedi</span></p>
+            </div>
+            
+            <div class="download-location-modal-buttons">
+                <button id="confirmDownloadBtn" class="confirm-download-btn">PDF Oluştur ve İndir</button>
+                <button id="cancelDownloadBtn" class="cancel-download-btn">İptal</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="static/script.js"></script>
+</body>
+
+</html>

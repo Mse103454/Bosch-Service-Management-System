@@ -1,0 +1,359 @@
+* {
+
+    margin: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+}
+
+
+
+body {
+
+    font-family: Arial, sans-serif;
+
+    font-size: 12px;
+
+    line-height: 1.4;
+
+    color: #000;
+
+    background: white;
+
+    padding: 20px;
+
+}
+
+
+
+.invoice-container {
+
+    width: 100%;
+
+    max-width: 21cm;
+
+    margin: 0 auto;
+
+}
+
+
+
+.header {
+
+    margin-bottom: 30px;
+
+}
+
+
+
+.header-left {
+
+    float: left;
+
+    width: 50%;
+
+}
+
+
+
+.header-left h1 {
+
+    font-size: 24px;
+
+    font-weight: bold;
+
+    margin-bottom: 15px;
+
+}
+
+
+
+.header-right {
+
+    float: right;
+
+}
+
+
+
+.header-right img {
+
+    width: 120px;
+
+    height: auto;
+
+}
+
+
+
+.customer-info {
+
+    clear: left;
+
+    width: 50%;
+
+    margin-top: 10px;
+
+}
+
+
+
+.customer-info p {
+
+    margin: 0;
+
+    line-height: 1.6;
+
+    font-size: 12px;
+
+    max-width: 100%;
+
+    word-wrap: break-word;
+
+}
+
+
+
+.order-info {
+
+    width: 100%;
+
+    margin-bottom: 15px;
+
+}
+
+
+
+.order-info table {
+
+    width: 50%;
+
+    float: right;
+
+    border-collapse: collapse;
+
+}
+
+
+
+.order-info td {
+
+    padding: 4px 8px;
+
+    border: 1px solid #999;
+
+    font-size: 11px;
+
+}
+
+
+
+.order-info td:first-child {
+
+    background-color: #f8f8f8;
+
+    width: 40%;
+
+    font-weight: normal;
+
+}
+
+
+
+.offer-info {
+
+    font-size: 11px;
+
+    margin: 5px 0;
+
+    clear: both;
+
+    display: block;
+
+}
+
+
+
+.vehicle-info {
+
+    width: 100%;
+
+    clear: both;
+
+    margin-bottom: 15px;
+
+}
+
+
+
+.vehicle-info table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+}
+
+
+
+.vehicle-info td {
+
+    padding: 4px 8px;
+
+    border: 1px solid #999;
+
+    font-size: 11px;
+
+}
+
+
+
+.vehicle-info td:nth-child(odd) {
+
+    background-color: #f8f8f8;
+
+    width: 20%;
+
+    font-weight: normal;
+
+}
+
+
+
+.services-table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+    margin: 15px 0;
+
+}
+
+
+
+.services-table th,
+
+.services-table td {
+
+    border: 1px solid #999;
+
+    padding: 4px 8px;
+
+    font-size: 11px;
+
+}
+
+
+
+.services-table th {
+
+    background-color: #f8f8f8;
+
+    font-weight: normal;
+
+    text-align: center;
+
+}
+
+
+
+.services-table td {
+
+    text-align: center;
+
+}
+
+
+
+.services-table td:nth-child(2) {
+
+    text-align: left;
+
+}
+
+
+
+.totals {
+
+    width: 300px;
+
+    float: right;
+
+    margin: 15px 0;
+
+}
+
+
+
+.totals table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+}
+
+
+
+.totals td {
+
+    padding: 4px 8px;
+
+    border: 1px solid #999;
+
+    font-size: 11px;
+
+}
+
+
+
+.totals td:first-child {
+
+    background-color: #f8f8f8;
+
+    font-weight: normal;
+
+}
+
+
+
+.totals td:last-child {
+
+    text-align: right;
+
+}
+
+
+
+.service-staff {
+
+    clear: both;
+
+    margin-top: 20px;
+
+    font-size: 11px;
+
+}
+
+
+
+.footer-text {
+
+    margin-top: 20px;
+
+    font-size: 11px;
+
+    line-height: 1.4;
+
+}
+
+
+
+.footer-text p {
+
+    margin-bottom: 5px;
+
+}

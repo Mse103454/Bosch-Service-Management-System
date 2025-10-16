@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Bosch Servis Faturası</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            line-height: 1.4;
+            color: #333;
+            background: white;
+        }
+
+        .invoice-container {
+            max-width: 21cm;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .header-left {
+            float: left;
+            width: 50%;
+        }
+
+        .header-left h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .header-right {
+            float: right;
+        }
+
+        .header-right img {
+            width: 120px;
+            height: auto;
+        }
+
+        .customer-info {
+            clear: left;
+            width: 50%;
+            margin-top: 10px;
+        }
+
+        .customer-info p {
+            margin: 0;
+            line-height: 1.6;
+            font-size: 12px;
+            max-width: 100%;
+            word-wrap: break-word;
+        }
+
+        .offer-section {
+            margin: 15px 0;
+        }
+
+        .offer-label {
+            margin-bottom: 5px;
+            font-size: 11px;
+        }
+
+        .offer-name {
+            margin-left: 20px;
+            font-size: 11px;
+        }
+
+        .customer-details {
+            margin-bottom: 20px;
+        }
+
+        .order-info {
+            width: 400px;
+            float: right;
+            margin-bottom: 20px;
+            clear: both;
+        }
+
+        .order-info table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            margin-top: 10px;
+        }
+
+        .order-info td,
+        .vehicle-info td {
+            padding: 4px 8px;
+            border: 1px solid #000;
+        }
+
+        .order-info td:first-child {
+            width: 150px;
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+
+        .vehicle-info {
+            clear: both;
+        }
+
+        .vehicle-info table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            margin-bottom: 15px;
+        }
+
+        .vehicle-info td:nth-child(odd) {
+            width: 150px;
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+
+        .offer-info {
+            margin: 5px 0 15px 0;
+            font-size: 11px;
+        }
+
+        .services-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 11px;
+            clear: both;
+        }
+
+        .services-table th {
+            background: #f5f5f5;
+            padding: 6px 8px;
+            text-align: center;
+            border: 1px solid #000;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .services-table td {
+            padding: 6px 8px;
+            border: 1px solid #000;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .services-table td:nth-child(2) {
+            text-align: left;
+            white-space: normal;
+        }
+
+        .services-table th,
+        .services-table td {
+            border: 1px solid #000;
+        }
+
+        .totals {
+            margin-top: 20px;
+            float: right;
+            width: 300px;
+        }
+
+        .totals table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+
+        .totals td {
+            padding: 5px;
+            border: 1px solid #000;
+        }
+
+        .totals td:first-child {
+            font-weight: bold;
+            background-color: #f5f5f5;
+        }
+
+        .totals td:last-child {
+            text-align: right;
+            padding-right: 10px;
+        }
+
+        .total-final {
+            font-weight: bold;
+        }
+
+        .service-staff {
+            margin-top: 20px;
+            clear: both;
+            font-size: 11px;
+        }
+
+        .footer-text {
+            margin-top: 20px;
+            font-size: 8px;
+            line-height: 1.3;
+        }
+
+        .footer-text p {
+            font-size: 8px;
+        }
+
+        .page-number {
+            margin-top: 20px;
+            font-size: 10px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="invoice-container">
+        <div class="header">
+            <div class="header-left">
+                <h1>Çanakçı Otomotiv</h1>
+            </div>
+            <div class="header-right">
+                <img src="{{ logo_path }}" alt="Bosch Service Logo">
+            </div>
+            <div class="customer-info">
+                <p>{{musteri_adi}}</p>
+                <p>{{adres}}</p>
+                <p>Tel: {{telefon}}</p>
+            </div>
+        </div>
+
+        <div class="order-info">
+            <table>
+                <tr>
+                    <td>Sipariş Tarihi</td>
+                    <td>{{siparis_tarihi}}</td>
+                </tr>
+                <tr>
+                    <td>Müşteri No.</td>
+                    <td>{{musteri_no}}</td>
+                </tr>
+                <tr>
+                    <td>İlgili Kişi No.</td>
+                    <td>{{teklif_kisi_no}}</td>
+                </tr>
+                <tr>
+                    <td>Araç Giriş Tarihi</td>
+                    <td>{{arac_giris_tarihi}}</td>
+                </tr>
+                <tr>
+                    <td>Araç Teslim Tarihi</td>
+                    <td>{{arac_teslim_tarihi}}</td>
+                </tr>
+                <tr>
+                    <td>KDV Kayıt Numaranız</td>
+                    <td>{{kdv_kayit_no}}</td>
+                </tr>
+                <tr>
+                    <td>Onay</td>
+                    <td>{{onay}}</td>
+                </tr>
+                <tr>
+                    <td>Harici Belge No</td>
+                    <td>{{harici_belge_no}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="clear: both;"></div>
+
+        <p class="offer-info">Teklifi Veren: MEHMET ESMERAY</p>
+
+        <div class="vehicle-info">
+            <table>
+                <tr>
+                    <td>Plaka No</td>
+                    <td>{{car_info.plate}}</td>
+                    <td>Ziyaret Kilometresi</td>
+                    <td>{{car_info.visit_km}}</td>
+                </tr>
+                <tr>
+                    <td>Araç Üretici/Model</td>
+                    <td>{{car_info.make}} {{car_info.model}}</td>
+                    <td>İlk Lis. Tarihi</td>
+                    <td>{{car_info.first_license_date}}</td>
+                </tr>
+                <tr>
+                    <td>Araç Kimlik No</td>
+                    <td>{{car_info.vin}}</td>
+                    <td>Bir Sonraki Genel Kontrol</td>
+                    <td>{{car_info.next_inspection}}</td>
+                </tr>
+            </table>
+        </div>
+
+        <table class="services-table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Açıklama</th>
+                    <th>Miktar</th>
+                    <th>Birim</th>
+                    <th>Birim Fiyat</th>
+                    <th>Fiyat</th>
+                    <th>KDV</th>
+                    <th>Tutar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                <tr>
+                    {% if item.type == 'labor' %}
+                    <td>İŞÇİLİK</td>
+                    <td>{{item.description}}</td>
+                    {% elif item.type == 'external' %}
+                    <td>{{item.part_code}}</td>
+                    <td>{{item.part_name}}</td>
+                    {% else %}
+                    <td>{{item.part_code}}</td>
+                    <td>{{item.part_name}}</td>
+                    {% endif %}
+                    <td>{{item.quantity}}</td>
+                    <td>ADET</td>
+                    <td>{{ "%.2f"|format(item.price_tl) }} TL</td>
+                    <td>{{ "%.2f"|format(item.quantity * item.price_tl) }} TL</td>
+                    <td>%{{ vat_rate|string }}</td>
+                    <td>{{ "%.2f"|format((item.quantity * item.price_tl) * (1 + vat_rate / 100)) }} TL</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="totals">
+            <table>
+                <tr>
+                    <td>Ara Toplam</td>
+                    <td>{{ "%.2f"|format(total_info.subtotal) }} TL</td>
+                </tr>
+                {% if discount_rate > 0 %}
+                <tr>
+                    <td>İskonto (%{{ "%.1f"|format(discount_rate) }})</td>
+                    <td>{{ "%.2f"|format(total_info.discount_amount) }} TL</td>
+                </tr>
+                <tr>
+                    <td>KDV Hariç Toplam</td>
+                    <td>{{ "%.2f"|format(total_info.subtotal_after_discount) }} TL</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td>KDV Hariç Toplam</td>
+                    <td>{{ "%.2f"|format(total_info.subtotal) }} TL</td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <td>KDV (%{{ "%.1f"|format(vat_rate) }})</td>
+                    <td>{{ "%.2f"|format(total_info.vat_amount) }} TL</td>
+                </tr>
+                <tr class="total-final">
+                    <td>KDV Dahil Toplam</td>
+                    <td>{{ "%.2f"|format(total_info.total) }} TL</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="service-staff">
+            <p><strong>Servis Personeli:</strong> {{ servis_personeli }}</p>
+        </div>
+
+        <div class="footer-text">
+            <p><strong>Değerli Müşterimiz;</strong></p>
+            <p>Bosch Car Servis'i tercih ettiğiniz için teşekkür ederiz. Aşağıda aracınızın bakımı ile ilgili olarak
+                hatırlatmak istediğimiz hususları bilgilerinize sunarız.</p>
+            <p>Bosch Car Servis'te onarım şartları;</p>
+            <p>-Kesin ücret iş sonunda belli olacaktır. Araç kabul esnasında verilen, bildirilen ücret işçilik, malzeme
+                ve diğer hizmet masraflarının yalnızca yaklaşık tutarını bildirmek içindir.</p>
+            <p>-Herhangi bir nedene bağlı olarak müşteri onarımından vazgeçer ise bu durumda arıza teşhisi için yapılan
+                harcamalar müşteriden tahsil edilir.</p>
+            <p>-Onarım süresinin uzaması nedeniyle müşteri yetkili servisten herhangi bir şekilde tazminat talep edemez.
+                Zira kabul sırasında belirtilen teslim tarihi ve zamanı tahminidir. Ancak her halükarda onarım süresi,
+                arızanın yetkili servise bildirim veya aracın teslim tarihinden itibaren 30 (otuz) iş gününü geçmeyecektir.</p>
+            <p>-Bu teklif, teklif tarihinden itibaren 15 (on beş) gün geçerlidir. Belirtilen süre sonunda teklif otomatik olarak
+                geçersiz hale gelir ve fiyatlar güncellenebilir.</p>
+        </div>
+
+        <div class="page-number">
+            <p>Çanakçı Otomotiv</p>
+        </div>
+    </div>
+</body>
+
+</html>
